@@ -1,16 +1,19 @@
 
 package jp.mixi.practice.dialog.med;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +28,8 @@ public class MainActivity extends Activity {
         adapter.add("bar");
         adapter.add("baz");
         list.setAdapter(adapter);
+        
+        adapter.remove("hoge");
     }
 
     @Override
@@ -53,6 +58,14 @@ public class MainActivity extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
         // TODO: 長押しメニューの、削除、の項目の選択をハンドリングして、確認のためのダイアログを
         // ListItemSelectionDialogFragment を使用して表示する
+        if (item.toString().equals("delete")) {
+            AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+            
+            ListItemSelectionDialogFragment dialog = new ListItemSelectionDialogFragment();
+            // 引数にFramentManagerとtagを設定します
+
+            dialog.show(getSupportFragmentManager(), "my_dialog_fragment");
+        }
         return super.onContextItemSelected(item);
     }
 }
